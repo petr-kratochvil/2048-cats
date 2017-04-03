@@ -67,14 +67,32 @@ Game.prototype.left = function() {
 };
 
 Game.prototype.right = function() {
+    for (var y = 0; y < this.height; y++) {
+        var strip = [];
+        for (var x = this.width-1; x >= 0; x--)
+            strip.push(this.fields[x][y]);
+        this.applyGravityToStrip(strip);
+    }
     this.addRandomBrick();
 };
 
 Game.prototype.top = function() {
+    for (var x = 0; x < this.width; x++) {
+        var strip = [];
+        for (var y = 0; y < this.height; y++)
+            strip.push(this.fields[x][y]);
+        this.applyGravityToStrip(strip);
+    }
     this.addRandomBrick();
 };
 
 Game.prototype.bottom = function() {
+    for (var x = 0; x < this.width; x++) {
+        var strip = [];
+        for (var y = this.height-1; y >= 0; y--)
+            strip.push(this.fields[x][y]);
+        this.applyGravityToStrip(strip);
+    }
     this.addRandomBrick();
 };
 
