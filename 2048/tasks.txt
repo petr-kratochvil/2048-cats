@@ -1,0 +1,5 @@
+* handle "game over" situation, so as the code does not loop forever (better random generation, or just check)
+* write top, bottom and right functions
+* enhance "applyGravityToStrip" function, so as it can merge bricks
+* mark newly added brick with different color
+* make some color codes for brick values
