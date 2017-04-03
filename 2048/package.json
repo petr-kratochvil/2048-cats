@@ -1,0 +1,8 @@
+{
+    "name": "2048",
+    "version": "1.0.0",
+    "keywords": ["util", "functional", "server", "client", "browser"],
+    "author": "KDG_2",
+    "contributors": [],
+    "dependencies": {}
+}
