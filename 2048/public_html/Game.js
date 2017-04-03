@@ -39,21 +39,29 @@ Field = function(parent, i, j) {
     this.element.className = "field";
     this.x = i;
     this.y = j;
-    this.element.style.top = i * 125;
-    this.element.style.left = j * 125;
+    this.element.style.top = j * 125;
+    this.element.style.left = i * 125;
     this.setValue(0);
     parent.appendChild(this.element);
 };
 
 Field.prototype.setValue = function(val) {
+    var lastVal = this.value;
     this.value = val;
     if (val == 0)
         this.element.innerHTML = "";
     else
         this.element.innerHTML = val;
+    return lastVal;
 };
 
 Game.prototype.left = function() {
+    for (var y = 0; y < this.height; y++) {
+        var strip = [];
+        for (var x = 0; x < this.width; x++)
+            strip.push(this.fields[x][y]);
+        this.applyGravityToStrip(strip);
+    }
     this.addRandomBrick();
 };
 
@@ -67,4 +75,19 @@ Game.prototype.top = function() {
 
 Game.prototype.bottom = function() {
     this.addRandomBrick();
+};
+
+Game.prototype.applyGravityToStrip = function(strip) {
+    for (var i = 0; i < strip.length; i++) {
+        if (strip[i].value == 0 && i + 1 < strip.length) {
+            // looking for next non-empty brick in the strip
+            var j = i;
+            while (j < strip.length && strip[j].value == 0)
+                j++;
+            if (j < strip.length) {
+                strip[i].setValue(strip[j].value);
+                strip[j].setValue(0);
+            }
+        }
+    }
 };
