@@ -46,6 +46,7 @@ Field = function(parent, i, j) {
 };
 
 Field.prototype.setValue = function(val) {
+    console.log("setValue: ["+this.x+", "+this.y+"], "+val);
     var lastVal = this.value;
     this.value = val;
     if (val == 0)
@@ -79,14 +80,25 @@ Game.prototype.bottom = function() {
 
 Game.prototype.applyGravityToStrip = function(strip) {
     for (var i = 0; i < strip.length; i++) {
-        if (strip[i].value == 0 && i + 1 < strip.length) {
+        // looking for next non-empty brick in the strip
+        var j = i;
+        while (j < strip.length && strip[j].value == 0)
+            j++;
+        console.log("gravity: "+i+", "+j);
+        if (j < strip.length) {
+            if (strip[i].value == 0) {
+                strip[i].setValue(strip[j].value);
+                strip[j].setValue(0);
+            }
             // looking for next non-empty brick in the strip
-            var j = i;
+            j = i+1;
             while (j < strip.length && strip[j].value == 0)
                 j++;
             if (j < strip.length) {
-                strip[i].setValue(strip[j].value);
-                strip[j].setValue(0);
+                if (strip[i].value == strip[j].value) {
+                    strip[i].setValue(strip[i].value * 2);
+                    strip[j].setValue(0);
+                }
             }
         }
     }
