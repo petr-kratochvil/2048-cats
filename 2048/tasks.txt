@@ -3,3 +3,4 @@
 * enhance "applyGravityToStrip" function, so as it can merge bricks
 * mark newly added brick with different color
 * make some color codes for brick values
+* it should not be possible to press a button, if it would not move any bricks (i.e. only add new random brick)
