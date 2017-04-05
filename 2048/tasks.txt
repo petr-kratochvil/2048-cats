@@ -1,0 +1,13 @@
+Tasks:
+
+1. The game now makes only left moves (other moves just add a new brick).
+Enable top, bottom and right moves.
+
+2. The game does not recognize, when it is full of bricks, and loops forever trying to add a random brick in a free field.
+Handle the "game over" situation.
+
+3. The game does not merge equal bricks, only moves them.
+Enhance "applyGravityToStrip" function, so as it can merge bricks.
+
+4. The game allows illegal moves, which would not move any bricks.
+Disable buttons, when they would result in an illegal move.
