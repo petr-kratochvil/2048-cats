@@ -67,6 +67,7 @@ Field = function(parent, i, j) {
  * @returns {Field.value} previous brick value
  */
 Field.prototype.setValue = function(val) {
+    console.log("setValue: ["+this.x+", "+this.y+"], "+val);
     var lastVal = this.value;
     this.value = val;
     if (val === 0)
@@ -99,6 +100,12 @@ Game.prototype.left = function() {
  * @returns {undefined}
  */
 Game.prototype.right = function() {
+    for (var y = 0; y < this.height; y++) {
+        var strip = [];
+        for (var x = this.width-1; x >= 0; x--)
+            strip.push(this.fields[x][y]);
+        this.applyGravityToStrip(strip);
+    }
     this.addRandomBrick();
 };
 
@@ -108,6 +115,12 @@ Game.prototype.right = function() {
  * @returns {undefined}
  */
 Game.prototype.top = function() {
+    for (var x = 0; x < this.width; x++) {
+        var strip = [];
+        for (var y = 0; y < this.height; y++)
+            strip.push(this.fields[x][y]);
+        this.applyGravityToStrip(strip);
+    }
     this.addRandomBrick();
 };
 
@@ -117,6 +130,12 @@ Game.prototype.top = function() {
  * @returns {undefined}
  */
 Game.prototype.bottom = function() {
+    for (var x = 0; x < this.width; x++) {
+        var strip = [];
+        for (var y = this.height-1; y >= 0; y--)
+            strip.push(this.fields[x][y]);
+        this.applyGravityToStrip(strip);
+    }
     this.addRandomBrick();
 };
 
@@ -128,17 +147,27 @@ Game.prototype.bottom = function() {
  */
 Game.prototype.applyGravityToStrip = function(strip) {
     for (var i = 0; i < strip.length; i++) {
-        // Go through the strip; if there is an empty field, look for the next non-empty field and bring it forward
-        if (strip[i].value === 0 && i + 1 < strip.length) {
-            
-            // Looking for next non-empty field in the strip
-            var j = i;
-            while (j < strip.length && strip[j].value === 0) j++;
-            
-            // If next brick was found, bring it forward
-            if (j < strip.length) {
+
+        // Looking for next non-empty field in the strip
+        var j = i;
+        while (j < strip.length && strip[j].value == 0)
+            j++;
+        console.log("gravity: "+i+", "+j);
+        if (j < strip.length) {
+            if (strip[i].value == 0) {
                 strip[i].setValue(strip[j].value);
                 strip[j].setValue(0);
+            }
+            // Looking for next non-empty brick in the strip
+            j = i+1;
+            while (j < strip.length && strip[j].value == 0)
+                j++;
+
+            if (j < strip.length) {
+                if (strip[i].value == strip[j].value) {
+                    strip[i].setValue(strip[i].value * 2);
+                    strip[j].setValue(0);
+                }
             }
         }
     }
