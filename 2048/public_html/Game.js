@@ -8,6 +8,7 @@ Game = function(element) {
     this.width = 4;
     this.height = 4;
     this.fields = [];
+    this.done = false;
     
     // Generate fields
     for (var i = 0; i < this.width; i++) {
@@ -28,19 +29,52 @@ Game = function(element) {
  * @returns {undefined}
  */
 Game.prototype.addRandomBrick = function() {
+    var gameOver = false;
     var tryBrick = function(i, j) {
         if (this.fields[i][j].value === 0) {
             this.fields[i][j].setValue(2);
             return true;
-        } else {
-            return false;
-        }
+            } else {
+                return false;
+            }
+        return false;
     }.bind(this);
     
-    var success = false;
-    do {
-        success = tryBrick(Math.floor(Math.random() * 4), Math.floor(Math.random() * 4));
-    } while (!success);
+    if (!this.hasFreeSpace())
+        gameOver = true;
+    
+    // if all squares are full calls gameEnd(), otherwise
+    // adds a brick at a random location
+    if (gameOver) {
+        this.gameEnd();
+    } else {
+        var success = false;
+        do {
+         success = tryBrick(Math.floor(Math.random() * 4), Math.floor(Math.random() * 4));
+        } while (!success);
+    }
+};
+
+Game.prototype.hasFreeSpace = function() {
+    for (var i = 0; i < this.width; i++) {
+        for (var j = 0; j < this.height; j++) {
+            if (this.fields[i][j].value === 0)
+                return true;
+        }
+    }
+    return false;
+};
+
+Game.prototype.gameEnd = function() {
+   var s = [0,0,0,0,"G","A","M","E","O","V","E","R",0,0,0,0],
+           pos = 0;
+    for (var i = 0; i < this.width; i++) {
+        for (var j = 0; j < this.height; j++) {
+            this.fields[i][j].setValue(s[pos]);
+            pos++;
+        }
+    }
+    this.done = true;
 };
 
 /**
@@ -81,6 +115,7 @@ Field.prototype.setValue = function(val) {
  * @returns {undefined}
  */
 Game.prototype.left = function() {
+    if (this.done) return;
     // For each row, create a strip
     for (var y = 0; y < this.height; y++) {
         var strip = [];
@@ -88,7 +123,9 @@ Game.prototype.left = function() {
         for (var x = 0; x < this.width; x++) {
             strip.push(this.fields[x][y]);
         }
-        this.applyGravityToStrip(strip);
+        do {
+            this.applyGravityToStrip(strip);
+        } while (this.merge(strip));
     }
     this.addRandomBrick();
 };
@@ -99,6 +136,19 @@ Game.prototype.left = function() {
  * @returns {undefined}
  */
 Game.prototype.right = function() {
+    if (this.done) return;
+    
+    for (var y = this.height-1; y >= 0; y--) {
+        var strip = [];
+        
+        for (var x = this.width-1; x >= 0; x--) {
+            strip.push(this.fields[x][y]);
+        }
+        do {
+            this.applyGravityToStrip(strip);
+        } while (this.merge(strip));
+    }
+    
     this.addRandomBrick();
 };
 
@@ -108,6 +158,19 @@ Game.prototype.right = function() {
  * @returns {undefined}
  */
 Game.prototype.top = function() {
+    if (this.done) return;
+    
+    for (var x = 0; x < this.width; x++) {
+        var strip = [];
+        
+        for (var y = 0; y < this.height; y++) {
+            strip.push(this.fields[x][y]);
+        }
+        do {
+            this.applyGravityToStrip(strip);
+        } while (this.merge(strip));
+    }
+    
     this.addRandomBrick();
 };
 
@@ -117,6 +180,20 @@ Game.prototype.top = function() {
  * @returns {undefined}
  */
 Game.prototype.bottom = function() {
+    if (this.done) return;
+    
+    for (var x = this.width-1; x >= 0; x--) {
+        var strip = [];
+        
+        for (var y = this.height-1; y >= 0; y--) {
+            strip.push(this.fields[x][y]);
+        }
+        this.applyGravityToStrip(strip);
+        this.merge(strip);
+        this.applyGravityToStrip(strip);
+        
+    }
+    
     this.addRandomBrick();
 };
 
@@ -142,4 +219,18 @@ Game.prototype.applyGravityToStrip = function(strip) {
             }
         }
     }
+};
+
+Game.prototype.merge = function(strip) {
+    var merged = false;
+    console.log("Merging strip: "+JSON.stringify(strip));
+    for (var i = 0; i < strip.length-1; i++) {
+        if (strip[i].value !== 0 && strip[i].value === strip[i+1].value) {
+            strip[i].setValue(strip[i+1].value + strip[i].value);
+            strip[i+1].setValue(0);
+            merged = true;
+        }
+    }
+    console.log("Result strip: "+JSON.stringify(strip));
+    return merged;
 };
