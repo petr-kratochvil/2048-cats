@@ -71,9 +71,9 @@ Field.prototype.setValue = function(val) {
     var lastVal = this.value;
     this.value = val;
     if (val === 0)
-        this.element.innerHTML = "";
+        this.element.style.backgroundImage = "";
     else
-        this.element.innerHTML = val;
+        this.element.style.backgroundImage = "url(img/" + val + ".png)";
     return lastVal;
 };
 
