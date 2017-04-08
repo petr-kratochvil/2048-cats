@@ -150,21 +150,22 @@ Game.prototype.applyGravityToStrip = function(strip) {
 
         // Looking for next non-empty field in the strip
         var j = i;
-        while (j < strip.length && strip[j].value == 0)
-            j++;
-        console.log("gravity: "+i+", "+j);
+        while (j < strip.length && strip[j].value === 0) j++;
+        
+        // If found, bring it forward
         if (j < strip.length) {
-            if (strip[i].value == 0) {
+            if (strip[i].value === 0) {
                 strip[i].setValue(strip[j].value);
                 strip[j].setValue(0);
             }
+            
             // Looking for next non-empty brick in the strip
-            j = i+1;
-            while (j < strip.length && strip[j].value == 0)
-                j++;
-
+            var j = i+1;
+            while (j < strip.length && strip[j].value === 0) j++;
+            
+            // If found, check its value and if the bricks are equal, merge them
             if (j < strip.length) {
-                if (strip[i].value == strip[j].value) {
+                if (strip[i].value === strip[j].value) {
                     strip[i].setValue(strip[i].value * 2);
                     strip[j].setValue(0);
                 }

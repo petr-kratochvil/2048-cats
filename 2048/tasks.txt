@@ -1,6 +1,13 @@
-* handle "game over" situation, so as the code does not loop forever (better random generation, or just check)
-* write top, bottom and right functions
-* enhance "applyGravityToStrip" function, so as it can merge bricks
-* mark newly added brick with different color
-* make some color codes for brick values
-* it should not be possible to press a button, if it would not move any bricks (i.e. only add new random brick)
+Tasks:
+
+1. The game now makes only left moves (other moves just add a new brick).
+Enable top, bottom and right moves.
+
+2. The game does not recognize, when it is full of bricks, and loops forever trying to add a random brick in a free field.
+Handle the "game over" situation.
+
+3. The game does not merge equal bricks, only moves them.
+Enhance "applyGravityToStrip" function, so as it can merge bricks.
+
+4. The game allows illegal moves, which would not move any bricks.
+Disable buttons, when they would result in an illegal move.
