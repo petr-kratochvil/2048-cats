@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>2048</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel=stylesheet href="base.css">
+        <script src="Game.js"></script>
+    </head>
+    <body onload="start()">
+        <div id="gameArea">
+            
+        </div>
+        <button onclick="game.left()">LEFT</button>
+        <button onclick="game.top()">TOP</button>
+        <button onclick="game.bottom()">BOTTOM</button>
+        <button onclick="game.right()">RIGHT</button>
+        <script>
+            start = function() {
+                game = new Game(document.getElementById("gameArea"));
+            }
+        </script>
+    </body>
+</html>
