@@ -10,14 +10,22 @@
         <div id="gameArea">
             
         </div>
-        <button onclick="game.left()">LEFT</button>
-        <button onclick="game.top()">TOP</button>
-        <button onclick="game.bottom()">BOTTOM</button>
-        <button onclick="game.right()">RIGHT</button>
+        <button onclick="game.left()" id="buttonLeft">LEFT</button>
+        <button onclick="game.top()" id="buttonTop">TOP</button>
+        <button onclick="game.bottom()" id="buttonBottom">BOTTOM</button>
+        <button onclick="game.right()" id="buttonRight">RIGHT</button>
         <script>
             start = function() {
                 game = new Game(document.getElementById("gameArea"));
-            }
+                
+                var setButtonEnabledFunction = function (buttonId) {
+                    return function (enabled) { document.getElementById(buttonId).disabled = !enabled; };
+                };
+                game.addEventListener("allowedMoveLeft", setButtonEnabledFunction("buttonLeft"));
+                game.addEventListener("allowedMoveTop", setButtonEnabledFunction("buttonTop"));
+                game.addEventListener("allowedMoveBottom", setButtonEnabledFunction("buttonBottom"));
+                game.addEventListener("allowedMoveRight", setButtonEnabledFunction("buttonRight"));
+            };
         </script>
     </body>
 </html>

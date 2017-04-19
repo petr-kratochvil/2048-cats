@@ -8,6 +8,7 @@ Game = function(element) {
     this.width = 4;
     this.height = 4;
     this.fields = [];
+    this.eventListeners = {};
     
     // Generate fields
     for (var i = 0; i < this.width; i++) {
@@ -20,6 +21,39 @@ Game = function(element) {
     // Add initial bricks
     this.addRandomBrick();
     this.addRandomBrick();
+};
+
+/**
+ * Adds a listener function to given event
+ * @param {string} eventName
+ * @param {function} listener - can be passed 1 parameter
+ * @returns {undefined}
+ */
+Game.prototype.addEventListener = function(eventName, listener) {
+    if (typeof this.eventListeners[eventName] === "undefined")
+        this.eventListeners[eventName] = [];
+    this.eventListeners[eventName].push(listener);
+};
+
+/**
+ * Emits an event with given name and parameter
+ * @param {string} eventName
+ * @param {type} param - parameter of the event
+ * @returns {undefined}
+ */
+Game.prototype.emitEvent = function(eventName, param) {
+    for (var key in this.eventListeners[eventName])
+        this.eventListeners[eventName][key](param);
+};
+
+/**
+ * Sets a move as allowed or disallowed
+ * @param {string} moveDirection - should be of "Left", "Top", "Right", "Bottom"
+ * @param {boolean} allowed
+ * @returns {undefined}
+ */
+Game.prototype.setAllowedMove = function(moveDirection, allowed) {
+    this.emitEvent("allowedMove"+moveDirection, allowed);
 };
 
 /**
