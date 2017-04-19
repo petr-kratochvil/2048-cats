@@ -1,8 +1,43 @@
-#gameArea { width: 500px; height: 500px; border: 1px solid black; 
-            position: relative;}
-.field { width: 125px; height: 125px; border: 5px groove brown;
+body { margin: 50px auto;}
+
+h1, h2 {font-face: sans-serif; text-align: center; width: 100%;}
+
+#square { position: relative; width: 600px; box-sizing: border-box; margin: 25px auto;}
+
+#square:before {
+	content: "";
+	display: block;
+	padding-top: 100%;
+}
+
+#gameArea { position:  absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: 1px solid black; 
+}
+
+.gameOver {  top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0; position: absolute;
+    background-position: center; background-size: 100% 100%; background-repeat: no-repeat; }
+
+.field { width: 25%; height: 25%; border: 5px groove brown;
         box-sizing: border-box; position:absolute; font-size: 300%;
         text-align: center; vertical-align: middle; line-height: 110px;
         background-size: cover;
+        color: sandybrown;
+        font-weight: bold;
+        text-shadow: 0.05em 0.05em 2px rgba(20,20,20,0.7);
 }
-button { font-size: 200%; margin: 6px; }
+button { font-size: 100%; margin: 6px; padding: 10px 30px;}
+
+#buttons { display: flex; width: 600px; margin: 0 auto; justify-content: space-around;}
+
+@media only screen and (max-width: 600px) {
+    #square { width: 100%; }
+    #buttons { width: 100%; }
+    button { padding-left: 0; padding-right: 0; width: 20%}
+}

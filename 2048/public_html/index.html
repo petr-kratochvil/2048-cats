@@ -4,17 +4,53 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel=stylesheet href="base.css">
+        <script src="hammer.min.js"></script>
         <script src="Game.js"></script>
     </head>
     <body onload="start()">
+        <h1>2048 cats</h1>
+        <div id="square">
         <div id="gameArea">
-            
+        </div></div>
+        <div id="buttons">
+            <button onclick="game.left()">LEFT</button>
+            <button onclick="game.top()">TOP</button>
+            <button onclick="game.bottom()">BOTTOM</button>
+            <button onclick="game.right()">RIGHT</button>
         </div>
-        <button onclick="game.left()">LEFT</button>
-        <button onclick="game.top()">TOP</button>
-        <button onclick="game.bottom()">BOTTOM</button>
-        <button onclick="game.right()">RIGHT</button>
+        <h2>You can also use arrow keys or swipe.</h2>
         <script>
+            var ham = new Hammer(document.getElementById("gameArea"));
+            ham.get('swipe').set({ direction: Hammer.DIRECTION_ALL});
+            ham.on('swipeup', function() {
+                    game.top();
+            });
+            ham.on('swipedown', function() {
+                    game.bottom();
+            });
+            ham.on('swipeleft', function() {
+                    game.left();
+            });
+            ham.on('swiperight', function() {
+                    game.right();
+            });
+            onKeyDown = function(event) {
+                switch(event.keyCode) {
+                    case 37:
+                        game.left();
+                        break;
+                    case 38:
+                        game.top();
+                        break;
+                    case 39:
+                        game.right();
+                        break;
+                    case 40:
+                        game.bottom();
+                        break;
+                }
+            };
+            document.addEventListener("keydown", onKeyDown);
             start = function() {
                 game = new Game(document.getElementById("gameArea"));
             }
