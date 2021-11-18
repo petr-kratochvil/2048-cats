@@ -10,6 +10,7 @@ Game = function(element) {
     this.fields = [];
     this.won = false;
     this.emptyFieldsCount = this.width * this.height;
+    this.points = 0;
     
     // Generate fields
     for (var i = 0; i < this.width; i++) {
@@ -30,6 +31,7 @@ Game = function(element) {
 
 Game.prototype.clear = function() {
     this.emptyFieldsCount = this.width * this.height;
+    this.points = 0;
     for (var i = 0; i < this.width; i++) {
         for (var j = 0; j < this.height; j++) {
             this.fields[i][j].setValue(0);
@@ -75,6 +77,8 @@ Game.prototype.addRandomBrick = function() {
     do {
         success = tryBrick(Math.floor(Math.random() * 4), Math.floor(Math.random() * 4));
     } while (!success);
+    this.points += 2;
+    document.getElementById("h1title").innerHTML = "2048 cats: <span style='color: darkgoldenrod'>" + this.points + " bodů</span>"
 };
 
 Game.prototype.performEndGame = function() {
